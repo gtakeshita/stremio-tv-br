@@ -1,4 +1,5 @@
-const { addonBuilder, serveHTTP } = require("stremio-addon-sdk");
+const { addonBuilder } = require("stremio-addon-sdk");
+const http = require("http");
 
 const manifest = {
   id: "org.br.tvaberta.mobile",
@@ -42,5 +43,33 @@ builder.defineCatalogHandler(({ type, id }) => {
       name: c.name,
       poster: c.poster
     }));
-    return Promise
-    
+    return Promise.resolve({ metas });
+  }
+  return Promise.resolve({ metas: [] });
+});
+
+builder.defineStreamHandler(({ type, id }) => {
+  if (type === "tv") {
+    const canal = CANAIS.find(c => c.id === id);
+    if (canal) {
+      return Promise.resolve({
+        streams: [{ title: `${canal.name} - Ao Vivo`, url: canal.url }]
+      });
+    }
+  }
+  return Promise.resolve({ streams: [] });
+});
+
+const addonInterface = builder.getInterface();
+const PORT = process.env.PORT || 7000;
+
+const server = http.createServer((req, res) => {
+  addonInterface(req, res, function() {
+    res.statusCode = 404;
+    res.end();
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Addon ativo na porta ${PORT}`);
+});
