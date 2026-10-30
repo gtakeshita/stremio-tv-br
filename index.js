@@ -2,9 +2,9 @@ const { addonBuilder, serveHTTP } = require("stremio-addon-sdk");
 
 const manifest = {
   id: "org.br.tvaberta.mobile",
-  version: "1.1.0",
+  version: "1.2.0",
   name: "TV Aberta Brasil",
-  description: "Canais abertos da TV brasileira",
+  description: "Canais abertos da TV brasileira em direto",
   resources: ["catalog", "meta", "stream"],
   types: ["tv"],
   catalogs: [
@@ -95,7 +95,16 @@ builder.defineStreamHandler(({ type, id }) => {
     const canal = CANAIS.find(c => c.id === id);
     if (canal) {
       return Promise.resolve({
-        streams: [{ title: `${canal.name} - Ao Vivo`, url: canal.url }]
+        streams: [
+          {
+            title: `${canal.name} - HD`,
+            url: canal.url,
+            behaviorHints: {
+              notWebReady: false,
+              bingeGroup: "tv-aberta"
+            }
+          }
+        ]
       });
     }
   }
