@@ -2,7 +2,7 @@ const { addonBuilder, serveHTTP } = require("stremio-addon-sdk");
 
 const manifest = {
   id: "org.br.tvaberta.mobile",
-  version: "1.2.0",
+  version: "1.3.0",
   name: "TV Aberta Brasil",
   description: "Canais abertos da TV brasileira em direto",
   resources: ["catalog", "meta", "stream"],
@@ -24,25 +24,25 @@ const CANAIS = [
     id: "tvbr_sbt",
     name: "SBT",
     poster: "https://upload.wikimedia.org/wikipedia/commons/1/14/SBT_logo_2023.png",
-    url: "https://live-sbt.akamaized.net/hls/live/2093556/sbtsp/master.m3u8"
+    url: "https://turpentined-marcellus-subliminally.trycloudflare.com/sbt/index.m3u8" // ou link alternativo público
   },
   {
     id: "tvbr_band",
     name: "Band",
     poster: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Rede_Bandeirantes_logo_2018.png",
-    url: "https://live.band.uol.com.br/hls/live/2099392/bandsp/master.m3u8"
+    url: "https://turpentined-marcellus-subliminally.trycloudflare.com/band/index.m3u8"
   },
   {
     id: "tvbr_redetv",
     name: "RedeTV!",
     poster: "https://upload.wikimedia.org/wikipedia/commons/9/91/RedeTV%21_logo_2019.png",
-    url: "https://livestream.redetv.com.br/hls/live/2034925/redetvlive/master.m3u8"
+    url: "https://live.redetv.com.br/liveout/index.m3u8"
   },
   {
     id: "tvbr_tvcultura",
     name: "TV Cultura",
     poster: "https://upload.wikimedia.org/wikipedia/commons/6/67/TV_Cultura_logo_2018.png",
-    url: "https://tvcultura.video.uol.com.br/hls/live/2093500/cultura/master.m3u8"
+    url: "https://cultura-live.studiotec.com.br/hls/live_cultura.m3u8"
   },
   {
     id: "tvbr_tvbrasil",
@@ -54,7 +54,7 @@ const CANAIS = [
     id: "tvbr_recordnews",
     name: "Record News",
     poster: "https://upload.wikimedia.org/wikipedia/commons/a/a2/Record_News_2021.png",
-    url: "https://m3u.cl/chs/32.m3u8"
+    url: "https://recnews-hls.r7.com/hls/live/205646/recnews/index.m3u8"
   }
 ];
 
@@ -97,11 +97,10 @@ builder.defineStreamHandler(({ type, id }) => {
       return Promise.resolve({
         streams: [
           {
-            title: `${canal.name} - HD`,
+            title: `${canal.name} - Ao Vivo`,
             url: canal.url,
             behaviorHints: {
-              notWebReady: false,
-              bingeGroup: "tv-aberta"
+              notWebReady: true
             }
           }
         ]
