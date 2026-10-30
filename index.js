@@ -42,7 +42,5 @@ builder.defineCatalogHandler(({ type, id }) => {
       name: c.name,
       poster: c.poster
     }));
-    return Promise.resolve({ metas });
-  }
-  return
-  
+    return Promise
+    
